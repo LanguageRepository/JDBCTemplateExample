@@ -22,7 +22,7 @@ public class Runner {
         System.out.println(employee4);
         List<Employee> employees = jdbcEmployeeDAO.selectAllRow();
         employees.forEach(System.out::println);
-        String result = jdbcEmployeeDAO.findNameById(5);
+        String result = jdbcEmployeeDAO.findNameById(6);
         System.out.println(result);
         System.out.println("~~~~~~~~~~~~~~~Batch~~~~~~~~~~~~~~~~");
         Employee employee1 = new Employee("Igoran", 35);
@@ -36,6 +36,9 @@ public class Runner {
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
         jdbcEmployeeDAO.insertBatch2("UPDATE employee SET NAME='Mary'");
         System.out.println("Finded all after name update on Mary");
+        jdbcEmployeeDAO.selectAllRow().forEach(System.out::println);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~");
+        jdbcEmployeeDAO.update(new Employee(6, "Pavel", 34));
         jdbcEmployeeDAO.selectAllRow().forEach(System.out::println);
         context.close();
     }

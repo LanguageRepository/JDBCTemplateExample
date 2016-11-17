@@ -81,4 +81,29 @@ public class JDBCEmployeeDAOImpl implements JDBCEmployeeDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.batchUpdate(new String[]{sql});
     }
+
+    @Override
+    public void delete(int id) {
+        String sql = "DELETE FROM employee WHERE ID = ?";
+        int result = jdbcTemplate.update(sql, id);
+        if(result != 0) {
+            System.out.println("Employee was delete");
+        } else {
+            System.out.println("Employee wasn't delete");
+        }
+    }
+
+    @Override
+    public void update(Employee employee) {
+        String sql = "UPDATE employee SET NAME = ?, AGE = ? WHERE ID = ?";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        Object[] args = {employee.getName(), employee.getAge(), employee.getId()};
+        int result = jdbcTemplate.update(sql, args);
+        if(result != 0) {
+            System.out.println("Object with id: " + employee.getId() + " was update");
+        } else {
+            System.out.println("Objects with id " + employee.getId() + " was not update");
+        }
+    }
+
 }
