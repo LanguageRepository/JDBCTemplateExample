@@ -1,4 +1,4 @@
-package com.example.dao.usejdbctemplate;
+package com.example.dao.jdbctemplate;
 
 import com.example.model.Employee;
 import org.springframework.jdbc.core.RowMapper;

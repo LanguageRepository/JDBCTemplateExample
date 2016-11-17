@@ -7,7 +7,7 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="jdbcEmployeeDao" class="com.example.dao.usejdbctemplate.JDBCEmployeeDAOImpl">
+    <bean id="jdbcEmployeeDao" class="com.example.dao.jdbctemplate.JDBCEmployeeDAOImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 

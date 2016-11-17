@@ -1,13 +1,10 @@
-package com.example.dao.usejdbctemplate;
+package com.example.dao.jdbctemplate;
 
 import com.example.model.Employee;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,20 +18,27 @@ public class JDBCEmployeeDAOImpl implements JDBCEmployeeDAO {
         this.dataSource = dataSource;
     }
 
-    public void insert(Employee employee) {
-        String sql = "INSERT INTO employee " + "(NAME, AGE) VALUES(?, ?)";
+    @Override
+    public Employee insert(Employee employee) {
+        String sql = "INSERT INTO employee " + "(ID, NAME, AGE) VALUES(?, ?, ?)";
         jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update(sql, new Object[]{employee.getName(), employee.getAge()});
-    }
-
-    public Employee findById(Integer id) {
-        String sql = "SELECT * FROM employee WHERE ID = ?";
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        Employee employee = (Employee) jdbcTemplate.queryForObject(sql, new Object[]{id}, new BeanPropertyRowMapper(Employee.class));
+        jdbcTemplate.update(sql, new Object[]{employee.getId(), employee.getName(), employee.getAge()});
+        System.out.println("Employee: " + employee + " was inserting");
         return employee;
     }
 
-    public List<Employee> selectAllRow() {
+    @Override
+    public Employee get(int id) {
+        String sql = "SELECT * FROM employee WHERE ID = ?";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        Employee employee = (Employee) jdbcTemplate.queryForObject(sql,
+                new Object[]{id},
+                new BeanPropertyRowMapper(Employee.class));
+        return employee;
+    }
+
+    @Override
+    public List<Employee> getAll() {
         jdbcTemplate = new JdbcTemplate(dataSource);
         String sql = "SELECT * FROM employee";
         List<Employee> employees = new ArrayList<Employee>();
@@ -47,39 +51,6 @@ public class JDBCEmployeeDAOImpl implements JDBCEmployeeDAO {
             employees.add(employee);
         }
         return employees;
-    }
-
-    public String findNameById(Integer id) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        String sql = "SELECT NAME FROM employee WHERE ID = ?";
-        String result = (String) jdbcTemplate.queryForObject(sql, new Object[]{id}, String.class);
-        return result;
-    }
-
-    @Override
-    public void insertBatch1(List<Employee> employees) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        String sql = "INSERT INTO employee " +
-                "(NAME, AGE) VALUES(?, ?)";
-        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
-                Employee employee = employees.get(i);
-                preparedStatement.setString(1, employee.getName());
-                preparedStatement.setInt(2, employee.getAge());
-            }
-
-            @Override
-            public int getBatchSize() {
-                return employees.size();
-            }
-        });
-    }
-
-    @Override
-    public void insertBatch2(String sql) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.batchUpdate(new String[]{sql});
     }
 
     @Override
