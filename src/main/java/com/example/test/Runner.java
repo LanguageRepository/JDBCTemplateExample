@@ -23,7 +23,7 @@ public class Runner {
                 new Employee(5, "Sasha", 45),
                 new Employee(6, "Alexey", 30)
         }));
-        jdbcEmployeeDAO.insert(employees.get(0));
+        jdbcEmployeeDAO.insert(employees.get(4));
         jdbcEmployeeDAO.get(1);
         jdbcEmployeeDAO.update(employees.get(4));
         jdbcEmployeeDAO.delete(4);

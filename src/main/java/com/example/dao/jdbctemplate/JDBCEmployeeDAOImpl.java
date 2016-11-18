@@ -20,9 +20,9 @@ public class JDBCEmployeeDAOImpl implements JDBCEmployeeDAO {
 
     @Override
     public Employee insert(Employee employee) {
-        String sql = "INSERT INTO employee " + "(ID, NAME, AGE) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO employee " + "(NAME, AGE) VALUES(?, ?)";
         jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update(sql, new Object[]{employee.getId(), employee.getName(), employee.getAge()});
+        jdbcTemplate.update(sql, new Object[]{employee.getName(), employee.getAge()});
         System.out.println("Employee: " + employee + " was inserting");
         return employee;
     }
